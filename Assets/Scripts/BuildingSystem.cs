@@ -26,6 +26,8 @@ public class BuildingSystem : MonoBehaviour
     private float fastBuildStartTime = 0;
     private bool inHoldPlace = false;
 
+    private Vector3 mouseDownPosition;
+
     private void Start()
     {
         blockObject = blocks[0];
@@ -45,11 +47,14 @@ public class BuildingSystem : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             mouseDownTime = Time.time;
+            mouseDownPosition = Input.mousePosition;
             mouseNotMovingStartTime = Time.time;
             canHoldPlace = true;
         }
         if (Input.GetMouseButtonUp(0)) {
-            if (Time.time - mouseDownTime < 0.2f) {
+            Vector3 currentMousePos = Input.mousePosition;
+            Vector3 deltaPos = mouseDownPosition - currentMousePos;
+            if (Time.time - mouseDownTime < 0.2f && vectorIsSmall(deltaPos)) {
                 BuildBlock(blockObject);
             }
             RotateCamera2.canRotate = true;
@@ -81,6 +86,11 @@ public class BuildingSystem : MonoBehaviour
                 }
             }
         }
+    }
+
+    bool vectorIsSmall(Vector3 vector) {
+        float max = 20f;
+        return Mathf.Abs(vector.x) <= max && Mathf.Abs(vector.y) <= max && Mathf.Abs(vector.z) <= max;
     }
 
     bool mouseMoving() {
