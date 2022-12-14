@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -115,9 +116,24 @@ public class BuildingSystem : MonoBehaviour
         {
             if (hitInfo.transform.tag == "Block")
             {
-                Destroy(hitInfo.transform.gameObject);
+                Animator blockAnimator = hitInfo.transform.gameObject.GetComponent<Animator>();
+                blockAnimator.SetTrigger("destroying");
+
+                StartCoroutine(CheckAnimationCompleted(blockAnimator, "CubeDestroy", () =>
+                {
+                    Destroy(hitInfo.transform.gameObject);
+                }
+        ));
             }
         }
+    }
+
+    public IEnumerator CheckAnimationCompleted(Animator animator,string CurrentAnim, Action Oncomplete)
+    {
+        while (!animator.GetCurrentAnimatorStateInfo(0).IsName(CurrentAnim))
+            yield return null;
+        if (Oncomplete != null)
+            Oncomplete();
     }
 
     void HighlightBlock()
