@@ -15,7 +15,7 @@ import {
   VisualElement,
 } from "UnityEngine/UIElements";
 
-export const BlockDisplay = ({ selectBlock, blockObject, index }) => {
+export const BlockDisplay = ({ selectBlock, blockObject, selected }) => {
   const [mouseDown, setMouseDown] = useState(false);
 
   //   useEffect(() => {
@@ -29,8 +29,13 @@ export const BlockDisplay = ({ selectBlock, blockObject, index }) => {
 
   return (
     <div
-      class="rounded-2xl bg-gray-500 mx-[10px] mt-2 mb-2 transition-[all] ease-out duration-[0.25]"
-      style={{ opacity: mouseDown ? 0.7 : 1, width: "20%", height: "90px" }}
+      class="rounded-2xl mx-[10px] mt-2 mb-2 transition-[all] ease-out duration-[0.25]"
+      style={{
+        opacity: mouseDown ? 0.7 : 1,
+        width: "20%",
+        height: "90px",
+        backgroundColor: selected ? "#FF0000" : "#0000FF",
+      }}
       onClick={() => selectBlock()}
       onMouseDown={() => {
         setMouseDown(true);
@@ -38,6 +43,8 @@ export const BlockDisplay = ({ selectBlock, blockObject, index }) => {
       onMouseUp={() => {
         setMouseDown(false);
       }}
-    ></div>
+    >
+      <image image={blockObject.getImage()} />
+    </div>
   );
 };

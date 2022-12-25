@@ -12,6 +12,7 @@ import { BlockDisplay } from "./BlockDisplay";
 
 export const BottomDrawer = () => {
   const [expanded, setExpanded] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   var RotateScript = GameObject.Find("Main Camera");
 
@@ -53,18 +54,24 @@ export const BottomDrawer = () => {
               if (expanded) {
                 return (
                   <BlockDisplay
-                    selectBlock={() => selectBlock(index)}
+                    selectBlock={() => {
+                      selectBlock(index);
+                      setSelectedIndex(0);
+                    }}
                     blockObject={blockSelector.blocksList[index]}
-                    index={index}
+                    selected={index == selectedIndex}
                   />
                 );
               } else {
                 if (index < 4) {
                   return (
                     <BlockDisplay
-                      selectBlock={() => selectBlock(index)}
+                      selectBlock={() => {
+                        selectBlock(index);
+                        setSelectedIndex(index);
+                      }}
                       blockObject={blockSelector.blocksList[index]}
-                      index={index}
+                      selected={index == selectedIndex}
                     />
                   );
                 }

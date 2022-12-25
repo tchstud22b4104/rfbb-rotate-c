@@ -8,6 +8,7 @@ var UIElements_1 = require("UnityEngine/UIElements");
 var BlockDisplay_1 = require("./BlockDisplay");
 var BottomDrawer = function () {
     var _a = (0, hooks_2.useState)(false), expanded = _a[0], setExpanded = _a[1];
+    var _b = (0, hooks_2.useState)(0), selectedIndex = _b[0], setSelectedIndex = _b[1];
     var RotateScript = UnityEngine_1.GameObject.Find("Main Camera");
     var setCanScroll = function (bool) {
         RotateScript.GetComponents(UnityEngine_1.Component)[3].uiFocused = !bool;
@@ -29,11 +30,17 @@ var BottomDrawer = function () {
             (0, preact_1.h)("scrollview", { "vertical-scroller-visibility": UIElements_1.ScrollerVisibility.Hidden },
                 (0, preact_1.h)("div", { class: "flex-row justify-center pt-1 flex-wrap h-full" }, blockSelector.blocksList.map(function (num, index) {
                     if (expanded) {
-                        return ((0, preact_1.h)(BlockDisplay_1.BlockDisplay, { selectBlock: function () { return selectBlock(index); }, blockObject: blockSelector.blocksList[index], index: index }));
+                        return ((0, preact_1.h)(BlockDisplay_1.BlockDisplay, { selectBlock: function () {
+                                selectBlock(index);
+                                setSelectedIndex(0);
+                            }, blockObject: blockSelector.blocksList[index], selected: index == selectedIndex }));
                     }
                     else {
                         if (index < 4) {
-                            return ((0, preact_1.h)(BlockDisplay_1.BlockDisplay, { selectBlock: function () { return selectBlock(index); }, blockObject: blockSelector.blocksList[index], index: index }));
+                            return ((0, preact_1.h)(BlockDisplay_1.BlockDisplay, { selectBlock: function () {
+                                    selectBlock(index);
+                                    setSelectedIndex(index);
+                                }, blockObject: blockSelector.blocksList[index], selected: index == selectedIndex }));
                         }
                     }
                 }))))));

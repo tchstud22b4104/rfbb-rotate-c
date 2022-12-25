@@ -43,7 +43,7 @@ public class BuildingSystem : MonoBehaviour
             Vector3 currentMousePos = Input.mousePosition;
             Vector3 deltaPos = mouseDownPosition - currentMousePos;
             if (Time.time - mouseDownTime < 0.2f && vectorIsSmall(deltaPos)) {
-                BuildBlock(BlockSelector.currentBlock);
+                BuildBlock(BlockSelector.currentBlock.getGameObject());
             }
             RotateCamera2.canRotate = true;
             inHoldPlace = false;
@@ -69,7 +69,7 @@ public class BuildingSystem : MonoBehaviour
 
             if (inHoldPlace) {
                 if (Time.time > fastBuildStartTime + 0.1f){
-                    BuildBlock(BlockSelector.currentBlock);
+                    BuildBlock(BlockSelector.currentBlock.getGameObject());
                     fastBuildStartTime = Time.time;
                 }
             }
