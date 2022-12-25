@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class BuildingSystem : MonoBehaviour
 {
-    public GameObject[] blocks;
-    private GameObject blockObject;
-
     public Transform parent;
 
     public Color normalColor;
@@ -29,22 +26,12 @@ public class BuildingSystem : MonoBehaviour
 
     private Vector3 mouseDownPosition;
 
-    private void Start()
-    {
-        blockObject = blocks[0];
-    }
-
     private void Update()
     {
         mouseDelta = Input.mousePosition - lastMousePos;
 
         lastMousePos = Input.mousePosition;
 
-        for (int i = 0; i < 9; i++) {
-            if (Input.GetKeyDown(i.ToString())){
-                blockObject = blocks[i];
-            }
-        }
         if (Input.GetMouseButtonDown(0))
         {
             mouseDownTime = Time.time;
@@ -56,7 +43,7 @@ public class BuildingSystem : MonoBehaviour
             Vector3 currentMousePos = Input.mousePosition;
             Vector3 deltaPos = mouseDownPosition - currentMousePos;
             if (Time.time - mouseDownTime < 0.2f && vectorIsSmall(deltaPos)) {
-                BuildBlock(blockObject);
+                BuildBlock(BlockSelector.currentBlock);
             }
             RotateCamera2.canRotate = true;
             inHoldPlace = false;
@@ -82,7 +69,7 @@ public class BuildingSystem : MonoBehaviour
 
             if (inHoldPlace) {
                 if (Time.time > fastBuildStartTime + 0.1f){
-                    BuildBlock(blockObject);
+                    BuildBlock(BlockSelector.currentBlock);
                     fastBuildStartTime = Time.time;
                 }
             }

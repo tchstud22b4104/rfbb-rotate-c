@@ -8,66 +8,64 @@ import {
   PrimitiveType,
 } from "UnityEngine";
 import { ScrollerVisibility, TextInputBaseField } from "UnityEngine/UIElements";
+import { BlockDisplay } from "./BlockDisplay";
 
 export const BottomDrawer = () => {
   const [expanded, setExpanded] = useState(false);
 
-  let data = [
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 4, 5, 6, 7, 8, 9, 30, 1, 2, 3, 4, 5, 6, 7, 8, 9,
-    4, 5, 6, 7, 8, 9, 30, 1, 2, 3, 4, 5, 6, 7, 8, 9, 4, 5, 6, 7, 8, 9, 30, 1, 2,
-    3, 4, 5, 6, 7, 8, 9, 4, 5, 6, 7, 8, 9, 30,
-  ];
-
   var RotateScript = GameObject.Find("Main Camera");
 
   const setCanScroll = (bool) => {
-    RotateScript.GetComponents(Component)[3].canRotate = bool;
+    RotateScript.GetComponents(Component)[3].uiFocused = !bool;
   };
 
   useEffect(() => {
     setCanScroll(!expanded);
   }, [expanded]);
 
+  var blockSelector = require("blockSelector");
+  const selectBlock = (index) => {
+    setExpanded(false);
+    blockSelector.setBlockIndex(index);
+  };
+
   return (
     <div
-      style={{ height: expanded ? 200 : 36 }}
+      style={{ height: expanded ? "85%" : "12%" }}
       class="w-full absolute bottom-0 transition-[all] ease-out duration-[0.25]"
     >
       <div
         onClick={() => setExpanded(!expanded)}
-        class="absolute -top-5 w-full"
+        class="absolute -top-20 h-full w-full"
       >
         <div
-          style={{ height: 14, width: 74 }}
-          class="rounded-lg bg-white mx-auto opacity-80"
+          style={{ height: expanded ? "6%" : "42%", width: "50%" }}
+          class="rounded-2xl bg-white mx-auto opacity-80"
         >
-          <div
-            class="text-gray-400 font-thin mt-[2px] ml-1"
-            style={{ fontSize: 8 }}
-          >
-            Search...
-          </div>
+          <div class="text-gray-800 text-xl mt-[6%] ml-2">Search...</div>
         </div>
       </div>
-      <div class="bg-white h-full rounded-t-lg opacity-40"></div>
+      <div class="bg-white h-full rounded-t-2xl opacity-40"></div>
       <div class="absolute top-0 w-full h-full">
         <scrollview vertical-scroller-visibility={ScrollerVisibility.Hidden}>
-          <div class="flex-row justify-center pt-1 flex-wrap">
-            {data.map((num, index) => {
+          <div class="flex-row justify-center pt-1 flex-wrap h-full">
+            {blockSelector.blocksList.map((num, index) => {
               if (expanded) {
                 return (
-                  <div
-                    class="w-7 h-7 rounded-lg bg-gray-500 mx-1 mb-2"
-                    onClick={() => setExpanded(false)}
-                  ></div>
+                  <BlockDisplay
+                    selectBlock={() => selectBlock(index)}
+                    blockObject={blockSelector.blocksList[index]}
+                    index={index}
+                  />
                 );
               } else {
                 if (index < 4) {
                   return (
-                    <div
-                      class="w-7 h-7 rounded-lg bg-gray-500 mx-1"
-                      onClick={() => setExpanded(false)}
-                    ></div>
+                    <BlockDisplay
+                      selectBlock={() => selectBlock(index)}
+                      blockObject={blockSelector.blocksList[index]}
+                      index={index}
+                    />
                   );
                 }
               }

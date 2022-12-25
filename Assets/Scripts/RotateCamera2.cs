@@ -27,6 +27,7 @@ public class RotateCamera2 : MonoBehaviour
     public float touchFOVSensitivity = 5f;
     //Can we rotate camera, which means we are not blocking the view
     public static bool canRotate = true;
+    public static bool uiFocused = false;
     private Vector2 swipeDirection; //swipe delta vector2
     private Vector2 touch1OldPos;
     private Vector2 touch2OldPos;
@@ -65,7 +66,7 @@ public class RotateCamera2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!canRotate)
+        if (!canRotate || uiFocused)
         {
             return;
         }
