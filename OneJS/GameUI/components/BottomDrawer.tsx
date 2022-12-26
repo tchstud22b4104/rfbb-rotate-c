@@ -1,20 +1,21 @@
 import { h } from "preact";
 import { useEffect } from "preact/hooks";
 import { useState } from "preact/hooks";
-import {
-  Component,
-  GameObject,
-  MeshRenderer,
-  PrimitiveType,
-} from "UnityEngine";
-import { ScrollerVisibility, TextInputBaseField } from "UnityEngine/UIElements";
+import { Component, GameObject, Texture2D } from "UnityEngine";
+import { ScrollerVisibility } from "UnityEngine/UIElements";
 import { BlockDisplay } from "./BlockDisplay";
 
 export const BottomDrawer = () => {
+  const placeholderSearch = "Search...";
+
   const [expanded, setExpanded] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
+  const [searchValue, setSearchValue] = useState(placeholderSearch);
+
   var RotateScript = GameObject.Find("Main Camera");
+
+  var ImageStore = GameObject.Find("ImageStore").GetComponents(Component)[1];
 
   const setCanScroll = (bool) => {
     RotateScript.GetComponents(Component)[3].uiFocused = !bool;
@@ -30,6 +31,12 @@ export const BottomDrawer = () => {
     blockSelector.setBlockIndex(index);
   };
 
+  useEffect(() => {
+    document.addRuntimeUSS(
+      "TextField > TextInput {background-color: white; border-width: 0; opacity: 0.7; padding-right: 48;} "
+    );
+  }, []);
+
   return (
     <div
       style={{ height: expanded ? "85%" : "12%" }}
@@ -37,13 +44,39 @@ export const BottomDrawer = () => {
     >
       <div
         onClick={() => setExpanded(!expanded)}
-        class="absolute -top-20 h-full w-full"
+        class="absolute -top-20 h-full w-full "
       >
         <div
           style={{ height: expanded ? "6%" : "42%", width: "50%" }}
-          class="rounded-2xl bg-white mx-auto opacity-80"
+          class="rounded-2xl mx-auto relative"
         >
-          <div class="text-gray-800 text-xl mt-[6%] ml-2">Search...</div>
+          <textfield
+            style={{
+              height: "100%",
+              borderRadius: 24,
+              fontSize: 24,
+            }}
+            onValueChanged={(e) => setSearchValue(e.newValue)}
+            value={searchValue}
+            onFocusOut={() => {
+              if (searchValue == "") {
+                setSearchValue(placeholderSearch);
+              }
+            }}
+            onFocusIn={() => {
+              if (searchValue == placeholderSearch) {
+                setSearchValue("");
+              }
+            }}
+          />
+          <image
+            onClick={(e) => {
+              log(searchValue);
+              setExpanded(true);
+            }}
+            class="absolute bottom-3 right-5 h-8 w-8"
+            image={ImageStore.getImageByIndex(0)}
+          />
         </div>
       </div>
       <div class="bg-white h-full rounded-t-2xl opacity-40"></div>
