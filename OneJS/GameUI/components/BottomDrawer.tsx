@@ -2,7 +2,7 @@ import { h } from "preact";
 import { useEffect } from "preact/hooks";
 import { useState } from "preact/hooks";
 import { Component, GameObject, Texture2D } from "UnityEngine";
-import { ScrollerVisibility } from "UnityEngine/UIElements";
+import { PickingMode, ScrollerVisibility } from "UnityEngine/UIElements";
 import { BlockDisplay } from "./BlockDisplay";
 
 export const BottomDrawer = () => {
@@ -26,9 +26,11 @@ export const BottomDrawer = () => {
   }, [expanded]);
 
   var blockSelector = require("blockSelector");
-  const selectBlock = (index) => {
+  const selectBlock = (block) => {
     setExpanded(false);
-    blockSelector.setBlockIndex(index);
+    let newIndex = blockSelector.setBlock(block);
+    setSelectedIndex(newIndex);
+    setSearchValue(placeholderSearch);
   };
 
   useEffect(() => {
@@ -68,6 +70,9 @@ export const BottomDrawer = () => {
                 setSearchValue("");
               }
             }}
+            onClick={() => {
+              setExpanded(true);
+            }}
           />
           <image
             onClick={(e) => {
@@ -83,33 +88,44 @@ export const BottomDrawer = () => {
       <div class="absolute top-0 w-full h-full">
         <scrollview vertical-scroller-visibility={ScrollerVisibility.Hidden}>
           <div class="flex-row justify-center pt-1 flex-wrap h-full">
-            {blockSelector.blocksList.map((num, index) => {
-              if (expanded) {
-                return (
-                  <BlockDisplay
-                    selectBlock={() => {
-                      selectBlock(index);
-                      setSelectedIndex(0);
-                    }}
-                    blockObject={blockSelector.blocksList[index]}
-                    selected={index == selectedIndex}
-                  />
-                );
-              } else {
-                if (index < 4) {
+            {blockSelector.blocksList
+              .filter((block) =>
+                block
+                  .getGameObject()
+                  .name.toLowerCase()
+                  .includes(
+                    searchValue == placeholderSearch
+                      ? ""
+                      : searchValue.toLowerCase()
+                  )
+              )
+              .map((blockObject, index) => {
+                if (expanded) {
                   return (
                     <BlockDisplay
                       selectBlock={() => {
-                        selectBlock(index);
-                        setSelectedIndex(index);
+                        selectBlock(blockObject);
+                        // setSelectedIndex(0);
                       }}
-                      blockObject={blockSelector.blocksList[index]}
-                      selected={index == selectedIndex}
+                      blockObject={blockObject}
+                      selected={blockSelector.currentBlock == blockObject}
                     />
                   );
+                } else {
+                  if (index < 4) {
+                    return (
+                      <BlockDisplay
+                        selectBlock={() => {
+                          selectBlock(blockObject);
+                          // setSelectedIndex(index);
+                        }}
+                        blockObject={blockObject}
+                        selected={blockSelector.currentBlock == blockObject}
+                      />
+                    );
+                  }
                 }
-              }
-            })}
+              })}
           </div>
         </scrollview>
       </div>

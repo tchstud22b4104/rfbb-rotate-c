@@ -49,4 +49,21 @@ public class BlockSelector : MonoBehaviour
             selectedIndex = index;
         }
     }
+
+    private static int getIndexOfBlock(Block block) {
+        for (int i = 0; i < blocksList.Length; i++) {
+            if (blocksList[i] == block) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    public static int setBlock(Block block) {
+        int index = getIndexOfBlock(block);
+        setBlockIndex(index);
+
+        return index;
+    }
 }

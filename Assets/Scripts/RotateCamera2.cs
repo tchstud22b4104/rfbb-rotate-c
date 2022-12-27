@@ -50,6 +50,8 @@ public class RotateCamera2 : MonoBehaviour
     private float minCameraFieldOfView = 6;
     private float maxCameraFieldOfView = 100;
     Vector3 dir;
+
+    private float initFov = 70;
     private void Awake()
     {
         GetCameraReference();
@@ -61,7 +63,7 @@ public class RotateCamera2 : MonoBehaviour
         dir = new Vector3(0, 0, distanceBetweenCameraAndTarget);//assign value to the distance between the maincamera and the target
         sceneCamera.transform.position = target.position + dir; //Initialize camera position
         cameraFOVDamp = sceneCamera.fieldOfView;
-        cameraFieldOfView = sceneCamera.fieldOfView;
+        cameraFieldOfView = initFov;
     }
     // Update is called once per frame
     void Update()

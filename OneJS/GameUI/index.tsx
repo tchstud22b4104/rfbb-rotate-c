@@ -1,11 +1,15 @@
-import { h, render } from "preact"
-import { BottomDrawer } from "./components/BottomDrawer"
-import { Focusable } from "UnityEngine/UIElements"
+import { h, render } from "preact";
+import { BottomDrawer } from "./components/BottomDrawer";
+import { Focusable } from "UnityEngine/UIElements";
+import { ModeChange } from "./components/ModeChange";
 
 const App = () => {
-    return (
-        <BottomDrawer />
-    )
-}
+  return (
+    <div class="w-full h-full">
+      <ModeChange />
+      <BottomDrawer />
+    </div>
+  );
+};
 
-render(<App />, document.body)
+render(<App />, document.body);

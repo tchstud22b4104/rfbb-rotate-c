@@ -20,9 +20,11 @@ var BottomDrawer = function () {
         setCanScroll(!expanded);
     }, [expanded]);
     var blockSelector = require("blockSelector");
-    var selectBlock = function (index) {
+    var selectBlock = function (block) {
         setExpanded(false);
-        blockSelector.setBlockIndex(index);
+        var newIndex = blockSelector.setBlock(block);
+        setSelectedIndex(newIndex);
+        setSearchValue(placeholderSearch);
     };
     (0, hooks_1.useEffect)(function () {
         document.addRuntimeUSS("TextField > TextInput {background-color: white; border-width: 0; opacity: 0.7; padding-right: 48;} ");
@@ -42,6 +44,8 @@ var BottomDrawer = function () {
                         if (searchValue == placeholderSearch) {
                             setSearchValue("");
                         }
+                    }, onClick: function () {
+                        setExpanded(true);
                     } }),
                 (0, preact_1.h)("image", { onClick: function (e) {
                         log(searchValue);
@@ -50,19 +54,26 @@ var BottomDrawer = function () {
         (0, preact_1.h)("div", { class: "bg-white h-full rounded-t-2xl opacity-40" }),
         (0, preact_1.h)("div", { class: "absolute top-0 w-full h-full" },
             (0, preact_1.h)("scrollview", { "vertical-scroller-visibility": UIElements_1.ScrollerVisibility.Hidden },
-                (0, preact_1.h)("div", { class: "flex-row justify-center pt-1 flex-wrap h-full" }, blockSelector.blocksList.map(function (num, index) {
+                (0, preact_1.h)("div", { class: "flex-row justify-center pt-1 flex-wrap h-full" }, blockSelector.blocksList
+                    .filter(function (block) {
+                    return block
+                        .getGameObject()
+                        .name.toLowerCase()
+                        .includes(searchValue == placeholderSearch
+                        ? ""
+                        : searchValue.toLowerCase());
+                })
+                    .map(function (blockObject, index) {
                     if (expanded) {
                         return ((0, preact_1.h)(BlockDisplay_1.BlockDisplay, { selectBlock: function () {
-                                selectBlock(index);
-                                setSelectedIndex(0);
-                            }, blockObject: blockSelector.blocksList[index], selected: index == selectedIndex }));
+                                selectBlock(blockObject);
+                            }, blockObject: blockObject, selected: blockSelector.currentBlock == blockObject }));
                     }
                     else {
                         if (index < 4) {
                             return ((0, preact_1.h)(BlockDisplay_1.BlockDisplay, { selectBlock: function () {
-                                    selectBlock(index);
-                                    setSelectedIndex(index);
-                                }, blockObject: blockSelector.blocksList[index], selected: index == selectedIndex }));
+                                    selectBlock(blockObject);
+                                }, blockObject: blockObject, selected: blockSelector.currentBlock == blockObject }));
                         }
                     }
                 }))))));

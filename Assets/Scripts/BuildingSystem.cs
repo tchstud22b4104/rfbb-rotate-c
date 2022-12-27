@@ -26,31 +26,36 @@ public class BuildingSystem : MonoBehaviour
 
     private Vector3 mouseDownPosition;
 
+    public bool buildMode = true;
+
     private void Update()
     {
-        mouseDelta = Input.mousePosition - lastMousePos;
-
-        lastMousePos = Input.mousePosition;
+       
 
         if (Input.GetMouseButtonDown(0))
         {
+            lastMousePos = Input.mousePosition;
             mouseDownTime = Time.time;
             mouseDownPosition = Input.mousePosition;
             mouseNotMovingStartTime = Time.time;
             canHoldPlace = true;
         }
         if (Input.GetMouseButtonUp(0)) {
+            
             Vector3 currentMousePos = Input.mousePosition;
             Vector3 deltaPos = mouseDownPosition - currentMousePos;
             if (Time.time - mouseDownTime < 0.2f && vectorIsSmall(deltaPos)) {
-                BuildBlock(BlockSelector.currentBlock.getGameObject());
+                if (buildMode)
+                {
+                    BuildBlock(BlockSelector.currentBlock.getGameObject());
+                }
+                else {
+                    DestroyBlock();
+                }
             }
             RotateCamera2.canRotate = true;
             inHoldPlace = false;
-        }
-        if (Input.GetMouseButton(1))
-        {
-            DestroyBlock();
+            canHoldPlace = true;
         }
 
         HighlightBlock();
@@ -69,11 +74,21 @@ public class BuildingSystem : MonoBehaviour
 
             if (inHoldPlace) {
                 if (Time.time > fastBuildStartTime + 0.1f){
-                    BuildBlock(BlockSelector.currentBlock.getGameObject());
+                    if (buildMode)
+                    {
+                        BuildBlock(BlockSelector.currentBlock.getGameObject());
+                    }
+                    else {
+                        DestroyBlock();
+                    }
                     fastBuildStartTime = Time.time;
                 }
             }
         }
+
+        mouseDelta = Input.mousePosition - lastMousePos;
+
+        lastMousePos = Input.mousePosition;
     }
 
     bool vectorIsSmall(Vector3 vector) {
