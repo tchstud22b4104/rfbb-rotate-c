@@ -9,12 +9,14 @@ var BlockDisplay = function (_a) {
             opacity: mouseDown ? 0.7 : 1,
             width: "20%",
             height: "90px",
-            backgroundColor: selected ? "#FF0000" : "#0000FF",
+            backgroundColor: selected ? "yellow" : "white",
         }, onClick: function () { return selectBlock(); }, onMouseDown: function () {
             setMouseDown(true);
         }, onMouseUp: function () {
             setMouseDown(false);
         } },
-        (0, preact_1.h)("image", { image: blockObject.getImage() })));
+        (0, preact_1.h)("div", { class: "flex-col items-center justify-center w-full h-full" },
+            (0, preact_1.h)("image", { image: blockObject.getImage() }),
+            (0, preact_1.h)("div", { class: "text-2xl" }, blockObject.getGameObject().name))));
 };
 exports.BlockDisplay = BlockDisplay;

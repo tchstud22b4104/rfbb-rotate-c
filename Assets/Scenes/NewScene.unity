@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 166285477}
+  m_SkyboxMaterial: {fileID: 437125805}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.03541759, g: 0.31093222, b: 0.5701296, a: 1}
+  m_IndirectSpecularColor: {r: 0.035394087, g: 0.31089813, b: 0.5700981, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -229,7 +229,7 @@ MonoBehaviour:
   scrollSmoothTime: 0.12
   editorFOVSensitivity: 5
   touchFOVSensitivity: 0.5
---- !u!21 &166285477
+--- !u!21 &437125805
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -676,6 +676,7 @@ MonoBehaviour:
   normalColor: {r: 1, g: 1, b: 1, a: 0}
   highlightedColor: {r: 0.7075472, g: 0.7075472, b: 0.7075472, a: 1}
   holdTimeToFastPlace: 1
+  buildMode: 1
 --- !u!1 &889305926
 GameObject:
   m_ObjectHideFlags: 0
@@ -1142,7 +1143,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   imagesHelper:
-  - {fileID: 2800000, guid: ee4c36bb732954a41be9c251ee99547c, type: 3}
+  - {fileID: 2800000, guid: d3bcc77e6a294c448abffc4e4501e23a, type: 3}
   - {fileID: 2800000, guid: 1a279b833417f6548a6cb0d61faef7a4, type: 3}
   - {fileID: 2800000, guid: 2e90b040dbd91874eb2c5ae3544c2ffa, type: 3}
 --- !u!4 &2033259365

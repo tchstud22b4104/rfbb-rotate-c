@@ -11,7 +11,7 @@ export const BlockDisplay = ({ selectBlock, blockObject, selected }) => {
         opacity: mouseDown ? 0.7 : 1,
         width: "20%",
         height: "90px",
-        backgroundColor: selected ? "#FF0000" : "#0000FF",
+        backgroundColor: selected ? "yellow" : "white",
       }}
       onClick={() => selectBlock()}
       onMouseDown={() => {
@@ -21,7 +21,10 @@ export const BlockDisplay = ({ selectBlock, blockObject, selected }) => {
         setMouseDown(false);
       }}
     >
-      <image image={blockObject.getImage()} />
+      <div class="flex-col items-center justify-center w-full h-full">
+        <image image={blockObject.getImage()} />
+        <div class="text-2xl">{blockObject.getGameObject().name}</div>
+      </div>
     </div>
   );
 };
